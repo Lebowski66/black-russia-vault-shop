@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -125,6 +126,55 @@
   }
 }
 
+/* Animation keyframes */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px hsl(252 100% 68% / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px hsl(252 100% 68% / 0.6), 0 0 30px hsl(252 100% 68% / 0.3);
+  }
+}
+
 @layer components {
   /* Gaming UI Components */
   .gaming-card {
@@ -144,7 +194,13 @@
   }
 
   .gaming-button:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
+  }
+
+  .gaming-button:disabled {
+    transform: none !important;
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .gaming-input {
@@ -152,23 +208,108 @@
     @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200;
   }
 
+  .gaming-input:hover {
+    border-color: hsl(var(--primary) / 0.5);
+  }
+
+  .gaming-input:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3);
+  }
+
   .gaming-select {
     @apply bg-card border border-border rounded-xl px-4 py-3 text-foreground cursor-pointer;
     @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200;
   }
 
+  .gaming-select:hover {
+    border-color: hsl(var(--primary) / 0.5);
+    background-color: hsl(var(--card) / 0.8);
+  }
+
   .amount-option {
-    @apply gaming-card p-4 cursor-pointer transition-all duration-200 hover:border-primary;
+    @apply gaming-card p-4 cursor-pointer transition-all duration-300 hover:border-primary;
     @apply text-center font-medium relative overflow-hidden;
+  }
+
+  .amount-option:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px hsl(var(--primary) / 0.2);
+  }
+
+  .amount-option:active {
+    transform: translateY(-2px) scale(0.98);
   }
 
   .amount-option.selected {
     @apply border-primary;
     background: linear-gradient(135deg, hsl(252 100% 68% / 0.1), hsl(262 100% 45% / 0.1));
     box-shadow: var(--glow-primary);
+    animation: pulse-glow 2s infinite;
   }
 
+  .amount-option.selected:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+
+  /* Animation classes */
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.4s ease-out forwards;
+  }
+
+  .animate-bounce-in {
+    animation: bounce-in 0.6s ease-out forwards;
+  }
+
+  .hover-scale {
+    transition: transform 0.2s ease-out;
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+
+  .price-animation {
+    animation: bounce-in 0.5s ease-out forwards;
+  }
+
+  /* Toast improvements */
+  .toast {
+    @apply gaming-card;
+    box-shadow: var(--shadow-gaming);
+  }
+
+  /* Select content background blur */
+  [data-radix-select-content] {
+    backdrop-filter: blur(8px);
+    background: hsl(var(--card) / 0.95) !important;
+  }
+
+  /* Smooth transitions for all interactive elements */
+  button, input, select, [role="button"] {
+    transition: all 0.2s ease-out;
+  }
+
+  /* Loading state */
   .pulse-animation {
     @apply animate-pulse;
+  }
+
+  /* Backdrop blur for dropdown */
+  .dropdown-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2px);
+    z-index: 40;
+    animation: fade-in 0.2s ease-out;
   }
 }
